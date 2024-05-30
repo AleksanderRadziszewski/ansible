@@ -1,0 +1,45 @@
+- name: Firewalld installed on servers
+  hosts: all
+  vars:
+    users:
+      - username: dev_user
+        group: ftp
+      - username: test_user
+        group: ftp
+      - username: janusz
+        group: users
+      - username: barbara
+        group: users
+      - username: zdzislaw
+        group: admins
+
+  tasks:
+    - name: Install Firewalld package on WEB servers
+      become: true
+      package:
+        name: firewalld
+        state: present
+      when: "'web' in group_names"
+      notify:
+        - Restart Firewalld
+
+    - name: Create groups
+      become: true
+      group:
+        name: "{{item.group}}"
+      loop: "{{users}}"
+
+    - name: Create users
+      become: true
+      ansible.builtin.user:
+        name: "{{item.username}}"
+        groups: "{{item.group}}" 
+        append: true
+      loop: "{{users}}"
+
+  handlers:
+    - name: Restart Firewalld
+      become: true
+      ansible.builtin.service:
+        name: firewalld
+        state: restarted

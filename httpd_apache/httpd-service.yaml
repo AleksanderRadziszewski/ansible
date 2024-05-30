@@ -1,0 +1,21 @@
+- name: Apache server installed
+  hosts: all
+  tasks:
+    - name: Latest Apache version installed
+      become: true
+      ansible.builtin.yum:
+        name: httpd
+        state: latest
+    - name: Enable service
+      become: true
+      ansible.builtin.service:
+        name: httpd
+        enabled: true
+        state: started
+    - name: Curl localhost
+      ansible.builtin.command:
+        cmd: "curl localhost"
+      register: test
+    - name: Debug curl
+      ansible.builtin.debug:
+        var: test["stdout_lines"]
