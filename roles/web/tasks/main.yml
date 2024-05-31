@@ -1,0 +1,19 @@
+- name: Install NGINX package
+  become: true
+  yum:
+    name: nginx
+    state: present
+  notify:
+    - start nginx
+
+- name: Render welcome html template ``
+  become: true
+  template:
+    src: welcome.html.j2
+    dest: /usr/share/nginx/html/welcome.html
+
+- name: Execute task and fail if file does not exist
+  stat:
+    path: /usr/share/nginx/html/welcome.html
+  register: file_status
+  failed_when: not file_status.stat.exists

@@ -1,0 +1,4 @@
+- name: Render templates
+  hosts: all
+  roles:
+    - web
