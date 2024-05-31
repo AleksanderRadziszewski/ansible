@@ -1,0 +1,8 @@
+- name: Push template to server
+  hosts: all
+  become: true
+  tasks:
+  - name: Render template
+    ansible.builtin.template:
+      src: server-info.j2
+      dest: /etc/server-info
