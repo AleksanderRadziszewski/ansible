@@ -1,0 +1,10 @@
+- name: Display host specification
+  hosts: all
+  tasks:
+    - name: Display specified host parameters
+      ansible.builtin.debug:
+        msg:
+          - amount of RAM = {{ansible_memtotal_mb}}
+          - number of processor cores = {{ansible_processor_cores}}
+          - initiating system = {{ansible_os_family}}
+          - architecture = {{ansible_architecture}}
