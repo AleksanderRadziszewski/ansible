@@ -1,0 +1,6 @@
+- name: Setup Docker
+  hosts: ungrouped
+  vars:
+    docker_version: 25.0.3
+  roles:
+    - docker
